@@ -3,7 +3,7 @@ import java.awt.Graphics2D;
 
 
 public class Matt{
-	public static final double g = .3;
+	public static double g = .3;
 	double y, x, vx, vy, ax;
 	int width, height;
 	private Game game;
@@ -18,6 +18,19 @@ public class Matt{
 		width = height = 200;
 		vx = 30;
 		ax = -.05;
+		this.game = game;
+		centered = false;
+	}
+	
+	public Matt(Game game, int gravity, int air, int launch)
+	{
+		g = 0.2 + gravity * 0.03;
+		x = 10;
+		y = 600;
+		vy = -10 * launch;
+		width = height = 200;
+		vx = 30;
+		ax = -.02 - (air * .01);
 		this.game = game;
 		centered = false;
 	}

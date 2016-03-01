@@ -1,3 +1,5 @@
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,6 +21,11 @@ public class Game {
 	private ArrayList<Entity> entities;
 	private Matt matt;
 	public int backgroundOffset;
+	
+	
+	private Options options;
+	private int gravity, airResistance, launchVel;
+	
 	public static void main(String[] args)
 	{
 		new Game();
@@ -32,9 +39,15 @@ public class Game {
 		frame.pack();
 		canvas.requestFocus();
 		canvas.displayLoading();
+		
+		options = new Options();
+		getOptions();
+		
+		
+		
 		entities = new ArrayList<Entity>();
 		entities.add(new Entity(Entity.Type.CAPTIAN, this));
-		matt = new Matt(this);
+		matt = new Matt(this, gravity, airResistance, launchVel);
 		boosts = 3;
 		//load all textures
 		try {
@@ -104,5 +117,51 @@ public class Game {
 		}
 		return null;
 	}
+	
+	
+	
+	private void getOptions()
+	{
+		final Object lock = new Object();
+
+	    Thread t = new Thread() {
+	        public void run() {
+	            synchronized(lock) {
+	                while (options.isVisible())
+	                    try {
+	                        lock.wait();
+	                    } catch (InterruptedException e) {
+	                        e.printStackTrace();
+	                    }
+	                System.out.println("Working now");
+	            }
+	        }
+	    };
+	    
+	    t.start();
+	    
+	    options.addWindowListener(new WindowAdapter() {
+
+	        @Override
+	        public void windowClosing(WindowEvent arg0) {
+	            synchronized (lock) {
+	                options.setVisible(false);
+	                lock.notify();
+	                
+	                gravity = options.getGravity();
+	                airResistance = options.getAir();
+	                launchVel = options.getLaunch();
+	            }
+	        }
+
+	    });
+
+	    try {
+			t.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
 
 }

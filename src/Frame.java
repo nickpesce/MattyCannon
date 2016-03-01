@@ -1,7 +1,4 @@
-import java.awt.Dimension;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 public class Frame extends JFrame{
