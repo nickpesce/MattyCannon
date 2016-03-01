@@ -3,6 +3,7 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
@@ -24,7 +25,7 @@ public class Game {
 	
 	
 	private Options options;
-	private int gravity, airResistance, launchVel;
+	private int gravity, airResistance, launchVel, mukLevel;
 	
 	public static void main(String[] args)
 	{
@@ -86,12 +87,25 @@ public class Game {
 			if(e.getX() < 0 - e.getWidth())
 			{
 				entities.remove(e);
-				entities.add(new Entity(Entity.Type.values()[(int)(Math.random()*Entity.Type.values().length)], this));
+				entities.add(getRandomEntity(mukLevel));
 			}else if(matt.centered)
 			{
 				e.setX(e.getX() - matt.getVx());
 			}
 		}
+	}
+	
+	private Entity getRandomEntity(int mukLevel)
+	{
+		if (mukLevel != 1)
+		{
+			int r = new Random().nextInt(6 - (mukLevel - 1));
+			
+			if (r == 0)
+				return new Entity(Entity.Type.MUK, this);
+		}
+		
+		return new Entity(Entity.Type.values()[(int)(Math.random()*Entity.Type.values().length)], this);
 	}
 
 	public void gameOver(String reason) {
@@ -151,6 +165,7 @@ public class Game {
 	                gravity = options.getGravity();
 	                airResistance = options.getAir();
 	                launchVel = options.getLaunch();
+	                mukLevel = options.getMukLevel();
 	            }
 	        }
 

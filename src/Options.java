@@ -1,16 +1,20 @@
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.util.Hashtable;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class Options extends JFrame implements ChangeListener
+public class Options extends JFrame implements ChangeListener, ActionListener
 {
 	private JLabel gravityLabel = new JLabel("Gravity");
 	private JSlider gravity = new JSlider(JSlider.HORIZONTAL, 1, 5, 3);
@@ -21,12 +25,17 @@ public class Options extends JFrame implements ChangeListener
 	private JLabel launchLabel = new JLabel("Launch velocity");
 	private JSlider launch = new JSlider(JSlider.HORIZONTAL, 1, 5, 3);
 	
+	private JLabel mukLabel = new JLabel("Mukund frequency");
+	private JSlider muk = new JSlider(JSlider.HORIZONTAL, 1, 5, 1);
+	
 	private JLabel difficulty = new JLabel("Difficulty: ");
 	private JLabel pic = new JLabel();
+	
+	private JButton button = new JButton("PLAY!");
 
 	public Options()
 	{
-	    setSize(330, 300);
+	    setSize(333, 400);
 	    setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 	    setVisible(true);
 	    this.setLayout(new FlowLayout());
@@ -52,14 +61,25 @@ public class Options extends JFrame implements ChangeListener
 	    launch.setPaintLabels(true);
 	    launch.setLabelTable(getLabelTable());
 	    
+	    add(mukLabel);
+	    add(muk);
+	    muk.setMajorTickSpacing(1);
+	    muk.setPaintTicks(true);
+	    muk.setPaintLabels(true);
+	    muk.setLabelTable(getLabelTableForMukund());
+	    
 	    gravity.addChangeListener(this);
 	    air.addChangeListener(this);
 	    launch.addChangeListener(this);
+	    muk.addChangeListener(this);
 	    
 	    difficulty.setFont(new Font("Verdana", Font.BOLD, 24));
 	    add(difficulty);
 	    pic.setIcon(getImage("src/medium.jpg"));
 	    add(pic);
+	    
+	    add(button);
+	    button.addActionListener(this);
 	    
 	    validate(); repaint();
 	}
@@ -73,9 +93,18 @@ public class Options extends JFrame implements ChangeListener
 		return labelTable;
 	}
 	
+	private Hashtable getLabelTableForMukund()
+	{
+		Hashtable labelTable = new Hashtable();
+		labelTable.put( new Integer( 1 ), new JLabel("Average") );
+		labelTable.put( new Integer( 3 ), new JLabel("High") );
+		labelTable.put( new Integer( 5 ), new JLabel("#@&!$") );
+		return labelTable;
+	}
+	
 	public int getDifficulty()
 	{
-		return gravity.getValue() + air.getValue() + (6 - launch.getValue());
+		return gravity.getValue() + air.getValue() + (6 - launch.getValue()) + muk.getValue();
 	}
 	
 	public int getGravity()
@@ -93,6 +122,11 @@ public class Options extends JFrame implements ChangeListener
 		return launch.getValue();
 	}
 	
+	public int getMukLevel()
+	{
+		return muk.getValue();
+	}
+	
 	private ImageIcon getImage(String path)
 	{
 		ImageIcon imageIcon = new ImageIcon(path); // load the image to a imageIcon
@@ -108,13 +142,13 @@ public class Options extends JFrame implements ChangeListener
 		System.out.println(difficulty);
 		
 		ImageIcon img = null;
-		if (difficulty >= 13)
+		if (difficulty >= 17)
 			img = getImage("src/olivia.png");
-		else if (difficulty >= 11)
+		else if (difficulty >= 13)
 			img = getImage("src/brendan.png");
-		else if (difficulty >= 9)
+		else if (difficulty >= 10)
 			img = getImage("src/medium.jpg");
-		else if (difficulty >= 7)
+		else if (difficulty >= 8)
 			img = getImage("src/joey.png");
 		else
 			img = getImage("src/jared.jpg");
@@ -122,5 +156,11 @@ public class Options extends JFrame implements ChangeListener
 		pic.setIcon(img);
 		
 		validate(); repaint();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) 
+	{
+		dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 	}
 }
