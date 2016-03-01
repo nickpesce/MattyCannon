@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JOptionPane;
 
 
@@ -40,7 +45,18 @@ public class Game {
 		frame.pack();
 		canvas.requestFocus();
 		canvas.displayLoading();
-		
+		Clip music;
+		try {
+			music = AudioSystem.getClip();
+			music.open(AudioSystem.getAudioInputStream(getClass().getResource("song.wav")));
+			music.loop(Clip.LOOP_CONTINUOUSLY);
+		} catch (LineUnavailableException e1) {
+			e1.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (UnsupportedAudioFileException e) {
+			e.printStackTrace();
+		}
 		options = new Options();
 		getOptions();
 		
@@ -60,8 +76,6 @@ public class Game {
 			mattImage = ImageIO.read(getClass().getResourceAsStream("/matt.png"));
 			arrow = ImageIO.read(getClass().getResourceAsStream("/arrow.png"));
 			twin = ImageIO.read(getClass().getResourceAsStream("/twin.jpg"));
-
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
