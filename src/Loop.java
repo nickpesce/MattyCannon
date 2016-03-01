@@ -14,11 +14,13 @@ public class Loop {
 			
 			@Override
 			public void run() {
+				long start;
 				while(running)
 				{
+					start = System.currentTimeMillis();
 					Loop.this.game.update();
 					try {
-						Thread.sleep(10);
+						Thread.sleep(Math.max(0, 16 - (System.currentTimeMillis() - start)));
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
