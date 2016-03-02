@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 public class Game {
 
 	public static final int WIDTH = 1600, HEIGHT = 900;
+	public static final double SCALE = .6;
 	public Frame frame; 
 	private Loop loop;
 	private Canvas canvas;

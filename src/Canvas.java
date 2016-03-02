@@ -14,14 +14,13 @@ public class Canvas extends java.awt.Canvas implements KeyListener{
 	private static final long serialVersionUID = -1354251777507926593L;
 
 	private Game game;
-	private double scale;
 	BufferStrategy bufferStrategy;
 	Font font;
 	DecimalFormat format;
 	public Canvas(Game game)
 	{
 		this.game = game;
-		setPreferredSize(new Dimension(Game.WIDTH, Game.HEIGHT));
+		setPreferredSize(new Dimension((int)(Game.WIDTH*Game.SCALE), (int)(Game.HEIGHT*Game.SCALE)));
 		setVisible(true);
 		setIgnoreRepaint(true);
 		addKeyListener(this);
@@ -39,6 +38,8 @@ public class Canvas extends java.awt.Canvas implements KeyListener{
 		Graphics2D g = (Graphics2D)bufferStrategy.getDrawGraphics();
 		g.setColor(Color.BLACK);
 		g.setFont(font);
+		g.scale(Game.SCALE,  Game.SCALE);
+
 
 		g.drawImage(game.background, game.backgroundOffset, 0, Game.WIDTH, Game.HEIGHT, null);
 		g.drawImage(game.background, game.backgroundOffset + Game.WIDTH, 0, Game.WIDTH, Game.HEIGHT, null);
@@ -94,7 +95,8 @@ public class Canvas extends java.awt.Canvas implements KeyListener{
 			bufferStrategy = getBufferStrategy();
 		}
 		Graphics2D g = (Graphics2D)bufferStrategy.getDrawGraphics();
-		g.setColor(Color.GREEN);
+		g.setColor(Color.GREEN);getBounds();
+		g.scale(Game.SCALE, Game.SCALE);
 		g.setFont(new Font("ARIAL", Font.BOLD, 72));
 		g.drawString("HAPPY BIRTHDAY MATT!", Game.WIDTH/2 - 400, Game.HEIGHT/2 - 20);
 		g.dispose();

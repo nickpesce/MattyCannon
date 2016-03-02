@@ -7,7 +7,7 @@ public class Frame extends JFrame{
 	public Frame() 
 	{
 		setVisible(true);
-		setSize(1600, 910);
+		setSize((int)(Game.WIDTH*Game.SCALE), (int)(Game.HEIGHT*Game.SCALE));
 		setTitle("Super Matt");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

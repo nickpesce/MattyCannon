@@ -75,7 +75,7 @@ public class Options extends JFrame implements ChangeListener, ActionListener
 	    
 	    difficulty.setFont(new Font("Verdana", Font.BOLD, 24));
 	    add(difficulty);
-	    pic.setIcon(getImage("src/medium.jpg"));
+	    pic.setIcon(getImage("/medium.jpg"));
 	    add(pic);
 	    
 	    add(button);
@@ -129,7 +129,7 @@ public class Options extends JFrame implements ChangeListener, ActionListener
 	
 	private ImageIcon getImage(String path)
 	{
-		ImageIcon imageIcon = new ImageIcon(path); // load the image to a imageIcon
+		ImageIcon imageIcon = new ImageIcon(getClass().getResource(path)); // load the image to a imageIcon
 		Image image = imageIcon.getImage(); // transform it 
 		Image newimg = image.getScaledInstance(120, 120,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
 		return new ImageIcon(newimg);  // transform it back
@@ -139,19 +139,19 @@ public class Options extends JFrame implements ChangeListener, ActionListener
 	public void stateChanged(ChangeEvent e) 
 	{
 		int difficulty = getDifficulty();
-		System.out.println(difficulty);
+//		System.out.println(difficulty);
 		
 		ImageIcon img = null;
 		if (difficulty >= 17)
-			img = getImage("src/olivia.png");
+			img = getImage("/olivia.png");
 		else if (difficulty >= 13)
-			img = getImage("src/brendan.png");
+			img = getImage("/brendan.png");
 		else if (difficulty >= 10)
-			img = getImage("src/medium.jpg");
+			img = getImage("/medium.jpg");
 		else if (difficulty >= 8)
-			img = getImage("src/joey.png");
+			img = getImage("/joey.png");
 		else
-			img = getImage("src/jared.jpg");
+			img = getImage("/jared.jpg");
 		
 		pic.setIcon(img);
 		
